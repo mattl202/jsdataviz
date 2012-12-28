@@ -1,4 +1,4 @@
 jsdataviz
 =========
 
-Full source code for examples in __Javascript Data Visualization Cookbook__, to be published by [Packt Publishing](http://packtpub.com).
+Full source code for examples in _Javascript Data Visualization Cookbook_, to be published by [Packt Publishing](http://packtpub.com).
