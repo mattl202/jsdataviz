@@ -95,8 +95,9 @@ tasks = [{
       status:      "in progress",
 }];
 
-ganttData = tasks.map(function(obj) {
+ganttData = $.map(tasks,function(obj,idx) {
 	  return ({
+  	    id:      idx,
 	      name:    obj.phaseName,
 	      desc:    obj.taskName,
 	      values:  [{
@@ -112,6 +113,11 @@ function taskClicked(taskObj) {
 	  alert("Current Status: " + taskObj.status);
 }
 
+function areaClicked(time, idx) {
+  var date = new Date(parseInt(time));
+  var task = tasks[idx];
+  alert(task.taskName + " not scheduled on " + date.toDateString())
+}
 
 $("#gantt").gantt({
     source: ganttData,
@@ -120,6 +126,7 @@ $("#gantt").gantt({
     minScale: "days",
     itemsPerPage: 10,
     onItemClick: taskClicked,
+    onAddClick: areaClicked,
 });
 
 });
