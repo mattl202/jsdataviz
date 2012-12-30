@@ -85,12 +85,12 @@ for (i = 0; i < us_data.length; i++) {
 Flotr.draw(
     document.getElementById("chart")
     ,[
-        { data: pacific,  label: "Pacific", lines: {show:false}, points: {show:true} },
-        { data: europe,   label: "Europe", lines: {show:false}, points: {show:true} },
-        { data: americas, label: "Americas", lines: {show:false}, points: {show:true} },
-        { data: mideast,  label: "Middle East", lines: {show:false}, points: {show:true} },
-        { data: asia,     label: "Asia", lines: {show:false}, points: {show:true} },
-        { data: us,       label: "United States", lines: {show:false}, points: {show:true} },
+        { data: pacific,  label: "Pacific", points: {show:true} },
+        { data: europe,   label: "Europe", points: {show:true} },
+        { data: americas, label: "Americas", points: {show:true} },
+        { data: mideast,  label: "Middle East", points: {show:true} },
+        { data: asia,     label: "Asia", points: {show:true} },
+        { data: us,       label: "United States", points: {show:true} },
     ]
     ,{
         title: "Life Expectancy vs. Health Care Spending",
