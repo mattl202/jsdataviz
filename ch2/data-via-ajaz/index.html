@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <!--[if lt IE 9]><script src="js/excanvas.min.js"></script><![endif]-->
+
+  </head>
+
+  <body>
+
+    <div id="chart" style="width:600px;height:400px;"></div>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/flot/0.7/jquery.flot.min.js"></script>
+    <script>
+      $(function() {
+        var deferredRegionsRequest = $.getJSON(
+            "http://api.worldbank.org/regions/",
+            {format: "json"}
+        );
+        
+        var deferredRegionsAvailable = $.Deferred();
+        
+        deferredRegionsRequest.done(function(response) {
+            deferredRegionsAvailable.resolve(
+                $.map(
+                    $.grep(response[1], function(regionObj) {
+                        return (regionObj.id != "");
+                    }),
+                    function(regionObj) {
+                        return {
+                            code: regionObj.code,
+                            name: regionObj.name.replace(" (all income levels)","")
+                        };
+                    }
+                )
+            );
+        });
+        
+        var deferredAllDataAvailable = $.Deferred();
+        
+        deferredRegionsAvailable.done(function(regions) {
+            $.each(regions, function(idx, regionObj) {
+                regionObj.deferredDataRequest = $.getJSON(
+                    "http://api.worldbank.org/countries/"
+                       + regionObj.code
+                       + "/indicators/NY.GDP.MKTP.CD"
+                    ,{ format: "json", per_page: 9999 }
+                );
+                regionObj.deferredDataAvailable = $.Deferred();
+                regionObj.deferredDataRequest.done(function(response) {
+                    regionObj.rawData = response[1] || [];
+                    regionObj.deferredDataAvailable.resolve();
+                });
+            });
+            $.when.apply(this,$.map(regions, function(regionObj) {
+                return regionObj.deferredDataAvailable
+            })).done(function() {
+                deferredAllDataAvailable.resolve(regions);
+            });
+        });
+        
+        var deferredChartDataReady = $.Deferred();
+        
+        deferredAllDataAvailable.done(function(regions) {
+            $.each(regions, function(idx, regionObj) {
+                regionObj.flotData = $.map(
+                    $.grep(regionObj.rawData, function(dataObj) {
+                        return (dataObj.value !== null);
+                    }),
+                    function(dataObj) {
+                        return [[
+                            parseInt(dataObj.date),
+                            parseFloat(dataObj.value)/1e12
+                        ]];
+                    }
+                )
+            })
+            deferredChartDataReady.resolve(regions);
+        });
+        
+        deferredChartDataReady.done(function(regions) {
+            $.plot($("#chart"),
+                $.map(regions, function(regionObj) {
+                    return {
+                        label: regionObj.name,
+                        data:  regionObj.flotData
+                    };
+                })
+                ,{ legend: { position: "nw"} }
+            );
+        });
+      });
+    </script>
+  </body>
+</html>
