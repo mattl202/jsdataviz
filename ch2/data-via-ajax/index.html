@@ -15,8 +15,8 @@
     <script>
       $(function() {
         var deferredRegionsRequest = $.getJSON(
-            "http://api.worldbank.org/regions/",
-            {format: "json"}
+            "http://api.worldbank.org/regions/?prefix=?",
+            {format: "jsonp"}
         );
         
         var deferredRegionsAvailable = $.Deferred();
@@ -45,7 +45,8 @@
                     "http://api.worldbank.org/countries/"
                        + regionObj.code
                        + "/indicators/NY.GDP.MKTP.CD"
-                    ,{ format: "json", per_page: 9999 }
+                       + "?prefix=?"
+                    ,{ format: "jsonp", per_page: 9999 }
                 );
                 regionObj.deferredDataAvailable = $.Deferred();
                 regionObj.deferredDataRequest.done(function(response) {
