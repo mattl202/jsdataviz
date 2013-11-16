@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Data Visualization with Javascript</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link href="css/styles.min.css" rel="stylesheet">
+    <link href="font/digital7.css" rel="stylesheet">
+    <link href="css/jquery.gantt.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato|Rokkitt:700' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+      <script src="js/excanvas.min.js"></script>
+    <![endif]-->
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="favicon.ico">
+  </head>
+
+  <body data-spy="scroll" data-target="#sidenav">
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="index.html">JS Data Viz</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="index.html">Home</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  The Book
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="intro.html">Introduction</a></li>
+                  <li><a href="chap1.html">1: Graphing Data</a></li>
+                  <li><a href="chap2.html">2: Making Charts Interactive</a></li>
+                  <li><a href="chap3.html">3: Integrating Charts in a Page</a></li>
+                  <li class="active"><a href="chap4.html">4: Creating Specialized Graphs</a></li>
+                  <li><a href="chap5.html">5: Showing Timelines</a></li>
+                  <li><a href="chap6.html">6: Visualizing Geographic Data</a></li>
+                  <li><a href="chap7.html">7: Managing Data in the Browser</a></li>
+                  <li><a href="chap8.html">8: Building Data-Driven Web Applications</a></li>
+                </ul>
+              </li>
+              <li><a href="http://sathomas.me">Author</a></li>
+              <li><a href="http://blog.sathomas.me">Blog</a></li>
+              <li><a href="https://speakerdeck.com/sathomas">Presentations</a></li>
+              <li><a href="https://github.com/sathomas/jsdataviz">Code</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3 sidebar-nav">
+      <div class="well" data-spy="affix" data-offset-top="20" id="sidenav">
+        <ul class="nav nav-list">
+          <li class="nav-header">Specialized Graphs</li>
+        </ul>
+      </div>
+    </div>
+    <div class="span9 main-content">
+
+      <section></section>
+      <hr/>
+      <p><a class="btn btn-inverse btn-large" href="chap5.html">Continue Reading »</a></p>
+
+    </div><!--/span-->
+  </div><!--/row-->
+
+  <hr>
+
+  <footer>
+    <p>© Stephen A Thomas 2013</p>
+  </footer>
+
+</div>
+    <script src="js/scripts.min.js"></script>
+    <script src="js/raphael-min.js"></script>
+    <script src="js/treemap-squared-0.5.min.js"></script>
+    <script src="js/heatmap-mod.js"></script>
+    <script src="js/jquery.fn.gantt.min.js"></script>
+    <script src="js/sigma.min.js"></script>
+    <script type="text/markdown" src="text/ch4/00-intro.md"        alt="Introduction"></script>
+    <script type="text/markdown" src="text/ch4/01-tree-maps.md"    alt="Tree Maps"></script>
+    <script type="text/markdown" src="text/ch4/02-heat-maps.md"    alt="Heat Maps"></script>
+    <script type="text/markdown" src="text/ch4/03-gantt-charts.md" alt="Gantt Charts"></script>
+    <script>
+      var contentLoaded = $.Deferred();
+      $(function() {
+        var converter = new Showdown.converter({ extensions: ['table'] });
+        $("script[type='text/markdown']").each(function(idx) {
+          var alt = $(this).attr("alt");
+          $.ajax({
+            url: this.src,
+            method: 'GET',
+            async: false,
+            contentType: 'text',
+            success: function (markdown) {
+              $("section").append($("<article>")
+                .attr("id","id"+idx)
+                .html(converter.makeHtml(markdown))
+              );
+              $(".sidebar-nav ul.nav-list").append($("<li>")
+                .append($("<a>")
+                  .attr("href","#id"+idx).text(alt)
+                )
+              );
+            }
+          });
+        });
+        contentLoaded.resolve();
+        Prism.highlightAll();
+      });
+    </script>
+
+  </body>
+</html>

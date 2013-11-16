@@ -1,0 +1,3 @@
+### Summing Up
+
+In this chapter we’ve considered various techniques for integrating visualizations within a web page. We’ve seen that sparklines are an excellent tool. Because they provide a lot of visual information in a small space, they leave room for other elements of the page, including text blocks, tables, and dashboards. We’ve considered several ways to increase the information density even further with annotations, composite charts, and click events. Finally we looked at how to create charts that update in real time, accurately visualizing the up-to-the-minute status of an underlying system.
